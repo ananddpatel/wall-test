@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<title>Document</title>
+</head>
+
+<body>
+	<div id="app" class="container">
+		<h1 @click="doThing">{{name}}</h1>
+		<div>
+			<input type="file" id="myFileInput" @change="onPhotoUpload" accept="image/*" capture="image/*;capture=camera">
+		</div>
+		<!-- <div>
+			<textarea id="base64textarea" placeholder="Base64 will appear here" cols="50" rows="15">{{imgData}}</textarea>
+		</div> -->
+		<div class="row">
+			<div class="col">
+				<img v-if="imgData" width="100%" :src="'data:image/png;base64, ' + imgData" alt="">
+			</div>
+		</div>
+		<!-- <img src="./30.png" alt=""> -->
+	</div>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+	<script>
+		const app = new Vue({
+			el: "#app",
+			data: {
+				name: "PhotoWall",
+				imgData: null
+			},
+			methods: {
+				doThing(event) {
+					console.log('hello world', event);
+				},
+				onPhotoUpload(event) {
+					console.log(event);
+					const files = event.target.files;
+					const file = files[0];
+
+					console.log(files, file);
+
+					if (files && file) {
+						const reader = new FileReader();
+
+						reader.onloadend = (readerEvt) => {
+							const binaryString = readerEvt.target.result;
+							this.imgData = btoa(binaryString);
+						};
+
+						reader.readAsBinaryString(file);
+					}
+				}
+			}
+		});
+
+	</script>
+</body>
+
+</html>
